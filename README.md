@@ -4,6 +4,7 @@ Backend para la **App: Content Suite**. Implementa los flujos de Brand DNA, gene
 
 ### Stack rápido
 
+- Requiere Python 3.12 o 3.13 (Render: define `runtime.txt`).
 - FastAPI, SQLAlchemy 2, Pydantic Settings.
 - Postgres + pgvector (RAG). Auth JWT con `python-jose`.
 - IA: Groq (texto), Google GenAI (texto/visión/embeddings).
