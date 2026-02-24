@@ -141,7 +141,7 @@ def audit_with_image(
         prompt = (
             "Audita la imagen contra el manual de marca. Sigue estas instrucciones al pie de la letra:\n"
             "1) Analiza logo, paleta, tipografía, estilo fotográfico, composición, iconografía y prohibiciones.\n"
-            "2) Si algo falla, explica cómo corregir la imagen (qué cambiar, remover o ajustar).\n"
+            "2) Si algo falla, explica en español cómo corregir la imagen (qué cambiar, remover o ajustar).\n"
             "3) Devuelve SOLO JSON válido según el esquema indicado.\n\n"
             f"Reglas relevantes del manual:\n{manual_context}"
         )
