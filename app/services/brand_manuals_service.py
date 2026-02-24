@@ -37,22 +37,59 @@ def create_brand_manual(
     rag_service: RagService,
     observability: ObservabilityService,
 ) -> BrandManualResponse:
-    system_prompt = "Eres estratega de marca senior. Produces guías concretas, medibles y sin contradicciones."
+    system_prompt = (
+        "Actúa como consultor senior en branding, identidad corporativa y diseño estratégico "
+        "con experiencia en desarrollo de manuales de marca para empresas de distintos sectores.\n\n"
+        "Tu objetivo es generar un manual de marca claro, coherente, estructurado y profesional, listo "
+        "para ser entregado a equipos de diseño, marketing y comunicación.\n\n"
+        "El manual debe:\n"
+        "- Tener estructura jerárquica clara (títulos y subtítulos).\n"
+        "- Usar lenguaje técnico pero comprensible.\n"
+        "- Mantener coherencia estratégica entre identidad, posicionamiento y elementos visuales.\n"
+        "- Evitar redundancias.\n"
+        "- Justificar brevemente las decisiones estratégicas.\n"
+        "- No incluir explicaciones meta ni comentarios sobre el proceso.\n"
+        "- No incluir ejemplos ficticios irrelevantes.\n"
+        "- Mantener consistencia conceptual en todo el documento.\n\n"
+        "Debe incluir como mínimo estas secciones:\n"
+        "1. Fundamentos estratégicos\n"
+        "- Propósito\n"
+        "- Misión\n"
+        "- Visión\n"
+        "- Valores\n"
+        "- Propuesta de valor\n"
+        "- Público objetivo\n"
+        "2. Personalidad y tono\n"
+        "- Arquetipo de marca\n"
+        "- Rasgos de personalidad\n"
+        "- Voz y tono\n"
+        "- Lineamientos de comunicación\n"
+        "3. Identidad visual\n"
+        "- Concepto del logotipo\n"
+        "- Versiones del logotipo\n"
+        "- Área de protección\n"
+        "- Tamaño mínimo\n"
+        "- Usos correctos\n"
+        "- Usos incorrectos\n"
+        "- Paleta cromática (primaria y secundaria con códigos HEX y RGB)\n"
+        "- Tipografías (primarias y secundarias con usos definidos)\n"
+        "- Sistema gráfico (iconografía, patrones, recursos visuales si aplica)\n"
+        "4. Aplicaciones básicas\n"
+        "- Papelería corporativa\n"
+        "- Aplicación digital\n"
+        "- Redes sociales\n"
+        "- Material promocional"
+    )
 
     user_prompt = (
-        "Genera un manual de marca estructurado y accionable para el equipo creativo. "
-        "Responde en JSON válido según el esquema. Cada sección debe ser concreta y sin contradicciones."
+        "Genera un manual de marca estructurado, coherente y accionable para el equipo creativo teniendo en cuenta las siguientes especificaciones:"
         "\n\n"
-        "Secciones obligatorias (usa estos títulos exactos):\n"
-        "1) Esencia de marca\n"
-        "2) Voz y tono\n"
-        "3) Do/Don't de lenguaje\n"
-        "4) Reglas visuales\n"
-        "5) Reglas de compliance\n\n"
-        f"Producto: {payload.product_name}\n"
-        f"Tono: {payload.tone}\n"
-        f"Público: {payload.audience}\n"
-        f"Contexto extra: {payload.extra_context or 'Ninguno'}"
+        f'Producto: "{payload.product_name}"\n'
+        f'Tono: "{payload.tone}"\n'
+        f'Público: "{payload.audience}"\n'
+        f'Contexto extra: "{payload.extra_context or "Ninguno"}"'
+        "\n\n"
+        "Responde en JSON válido según el esquema."
     )
 
     response_format = {

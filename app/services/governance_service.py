@@ -120,12 +120,14 @@ def audit_with_image(
         "logo, paleta de colores, tipografía, estilo fotográfico, composición, "
         "uso de iconografía, prohibiciones visuales y consistencia de marca."
     )
+
     rag_context = rag_service.retrieve_relevant_chunks(
         db=db,
         scope_id=asset.manual_id,
         query_text=rag_query,
         top_k=8,
     )
+
     manual_context = "\n\n".join(rag_context)
 
     file_bytes = file.file.read()
@@ -137,10 +139,34 @@ def audit_with_image(
         metadata={"user_id": current_user.id},
     ) as span:
         prompt = (
-            "Audita si la imagen cumple el manual de marca. "
-            "Responde JSON exacto con keys: verdict (check|fail), explanation, confidence (0-1).\n\n"
+            "Audita la imagen contra el manual de marca. Sigue estas instrucciones al pie de la letra:\n"
+            "1) Analiza logo, paleta, tipografía, estilo fotográfico, composición, iconografía y prohibiciones.\n"
+            "2) Si algo falla, explica cómo corregir la imagen (qué cambiar, remover o ajustar).\n"
+            "3) Devuelve SOLO JSON válido según el esquema indicado.\n\n"
             f"Reglas relevantes del manual:\n{manual_context}"
         )
+        response_schema = {
+            "type": "object",
+            "properties": {
+                "verdict": {
+                    "type": "string",
+                    "enum": ["check", "fail"],
+                    "description": "check si cumple, fail si incumple",
+                },
+                "explanation": {
+                    "type": "string",
+                    "description": "Resumen breve de hallazgos y pasos para corregir la imagen si aplica",
+                },
+                "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "description": "Confianza entre 0 y 1",
+                },
+            },
+            "required": ["verdict", "explanation", "confidence"],
+            "additionalProperties": False,
+        }
         with observability.generation(
             name="llm.multimodal_audit",
             input_data={
@@ -162,6 +188,8 @@ def audit_with_image(
                 prompt=prompt,
                 image_bytes=file_bytes,
                 mime_type=file.content_type or "image/jpeg",
+                response_mime_type="application/json",
+                response_json_schema=response_schema,
             )
             observability.annotate(gen, {"raw_result": raw_result})
         try:

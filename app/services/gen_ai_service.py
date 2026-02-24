@@ -49,6 +49,8 @@ class GenAIService:
         image_bytes: bytes | None = None,
         mime_type: str = "image/jpeg",
         model: str | None = None,
+        response_mime_type: str | None = None,
+        response_json_schema: dict[str, Any] | None = None,
     ) -> str:
         parts: Sequence[Any] = [prompt]
         if types and hasattr(types, "Part"):
@@ -62,6 +64,10 @@ class GenAIService:
         response = self.google_client.models.generate_content(
             model=model or self.settings.google_vision_model,
             contents=parts,
+            config={
+                "response_mime_type": response_mime_type,
+                "response_json_schema": response_json_schema,
+            },
         )
         text_payload = (getattr(response, "text", "") or "").strip()
 
