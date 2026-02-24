@@ -2,6 +2,3 @@
 __pycache__/
 .pytest_cache/
 .env
-uploads/*
-!uploads/.gitkeep
-EOF && touch /Users/bardo/Codigo/prediqt/prediqt-backend/uploads/.gitkeep

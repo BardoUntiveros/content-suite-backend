@@ -20,7 +20,7 @@ cp .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
 
-- DB: usa `DATABASE_URL` (por defecto `postgresql+psycopg://postgres:postgres@localhost:5432/prediqt`).
+- DB: usa `DATABASE_URL` (por defecto `postgresql+psycopg://postgres:postgres@localhost:5432/contentsuite`).
 - Si `SEED_DEFAULT_USERS=true` se crean usuarios demo (creator/approver_a/approver_b con passwords en seed).
 
 ### Roles y workflow

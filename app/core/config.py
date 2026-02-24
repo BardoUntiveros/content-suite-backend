@@ -16,7 +16,7 @@ class Settings(BaseSettings):
         default=1440, alias="ACCESS_TOKEN_EXPIRE_MINUTES"
     )
     database_url: str = Field(
-        default="postgresql+psycopg://postgres:postgres@localhost:5432/prediqt",
+        default="postgresql+psycopg://postgres:postgres@localhost:5432/contentsuite",
         alias="DATABASE_URL",
     )
     cors_origins: list[str] = Field(
@@ -24,7 +24,9 @@ class Settings(BaseSettings):
     )
 
     groq_api_key: str = Field(default=..., alias="GROQ_API_KEY")
-    groq_model: str = Field(default="llama-3.3-70b-versatile", alias="GROQ_MODEL")
+    groq_model: str = Field(
+        default="moonshotai/kimi-k2-instruct-0905", alias="GROQ_MODEL"
+    )
 
     google_api_key: str = Field(default=..., alias="GOOGLE_API_KEY")
     google_text_model: str = Field(
